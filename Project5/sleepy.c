@@ -73,7 +73,7 @@ sleepy_open(struct inode *inode, struct file *filp)
       printk(KERN_WARNING "[target] open: internal error\n");
       return -ENODEV; /* No such device */
     }
-	
+
   return 0;
 }
 
@@ -94,7 +94,7 @@ sleepy_read(struct file *filp, char __user *buf, size_t count,
     return -EINTR;
 	
   /* YOUR CODE HERE */
-
+  printk("READING\n");
   /* END YOUR CODE */
 	
   mutex_unlock(&dev->sleepy_mutex);
@@ -105,6 +105,8 @@ ssize_t
 sleepy_write(struct file *filp, const char __user *buf, size_t count, 
 	     loff_t *f_pos)
 {
+  printk("WRITING\n");
+
   struct sleepy_dev *dev = (struct sleepy_dev *)filp->private_data;
   ssize_t retval = 0;
 	
@@ -112,7 +114,7 @@ sleepy_write(struct file *filp, const char __user *buf, size_t count,
     return -EINTR;
 	
   /* YOUR CODE HERE */
-
+  printk("WRITING\n");
   /* END YOUR CODE */
 	
   mutex_unlock(&dev->sleepy_mutex);
@@ -220,7 +222,9 @@ sleepy_init_module(void)
   int i = 0;
   int devices_to_destroy = 0;
   dev_t dev = 0;
-	
+
+  printk("Hey!\n");
+
   if (sleepy_ndevices <= 0)
     {
       printk(KERN_WARNING "[target] Invalid value of sleepy_ndevices: %d\n", 
